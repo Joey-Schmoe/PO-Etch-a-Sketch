@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <style>
+            header {
+                width: 540px;
+                margin: auto;
+                display: flex;
+                justify-content: space-between;
+                align-content: center;
+            }
+
+            header button {
+                font-size: 28px;
+                margin: auto;
+            }
+
+            #grid-container {
+                width: 540px;
+                height: 540px;
+
+                display: grid;
+                margin: auto;
+            }
+
+            .grid-cell {
+                background-color: black;
+                
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Etch-a-Sketch</h1>
+            <button type="button" id="reset-button">Reset</button>
+        </header>
+        <div id="grid-container">
+
+        </div>
+    </body>
+    <script>
+        InitializeGrid(16);
+
+        function InitializeGrid(columns) {
+            let grid = document.getElementById('grid-container');
+            let gWidth = grid.offsetWidth;
+            let gHeight = grid.offsetHeight;
+
+            let colCount = columns;
+
+            let cWidth = Math.floor(gWidth / colCount);
+            let cHeight = Math.floor(gHeight / colCount);
+
+            console.log("Cell Width: " + cWidth);
+            console.log("Cell Height: " + cHeight);
+
+            let cellCount = Math.pow(colCount, 2);
+
+            for (let i = 0; i < cellCount; i++) {
+                div = document.createElement('div');
+                div.style.width = cWidth.toString() + "px";
+                div.style.height = cWidth.toString() + "px";
+                div.style.opacity = .1;
+                div.style.margin = 0;
+                div.style.padding = -1;
+                div.classList.add('grid-cell');
+                div.addEventListener('mouseover', function (e) {
+                DarkenCell(e.target);
+                });
+                grid.append(div);
+            }
+
+            let templateString = "";
+
+            for (let i = 0; i < colCount; i++) {
+                templateString += cWidth.toString() + "px ";
+            }
+
+            console.log(templateString);
+
+            grid.style.gridTemplateColumns = templateString;
+            grid.style.gridTemplateRows = templateString;
+
+            function DarkenCell(cell) {
+                let currentOpacity = cell.style.opacity;
+
+                //Cast current opacity to a number so it can be added to
+                let newOpacity = Number(cell.style.opacity) + .1;
+
+                cell.style.opacity = newOpacity;
+            }
+        }
+        
+
+        let button = document.getElementById('reset-button');
+
+        button.addEventListener('click', function () {
+            document.getElementById('grid-container').innerHTML = "";
+            let newGrid = prompt("How many columns/rows?", "16");
+            InitializeGrid(newGrid);
+        });
+    </script>
+</html>
